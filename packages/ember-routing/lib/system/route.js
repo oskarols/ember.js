@@ -1322,12 +1322,30 @@ var Route = EmberObject.extend(ActionHandler, {
     });
     ```
 
+    Alternatively you can use the view-property, in which case
+    the render-method tries to get the template from the `template`
+    property on the view, and falling back to `this.routeName` on
+    the route.
+
+    ```js
+    App.PostRoute = App.Route.extend({
+      renderTemplate: function() {
+        this.render({
+          view: 'myPost',         // the view (and associated template) to render
+          into: 'index',          // the template to render into
+          outlet: 'detail',       // the name of the outlet in that template
+          controller: 'blogPost'  // the controller to use for the template
+        });
+      }
+    });
+    ```
+
     Remember that the controller's `model` will be the route's model. In
     this case, the default model will be `App.Post.find(params.post_id)`.
 
     @method render
-    @param {String} name the name of the template to render
-    @param {Object} options the options
+    @param {String} name identifier used to get template, view and controller
+    @param {Object} options additional options and/or overrides
   */
   render: function(name, options) {
     Ember.assert("The name in the given arguments is undefined", arguments.length > 0 ? !isNone(arguments[0]) : true);
